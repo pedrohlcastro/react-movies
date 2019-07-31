@@ -9,9 +9,8 @@ class Movies {
     });
   }
 
-  async seachByTitle(title, page = 1) {
-    const res = await this.api.get('/', { s: title, page });
-    return res.data.Search || [];
+  seachByTitle(title, page = 1) {
+    return this.api.get('/', { s: title, page });
   }
 
   searchById(id) {
