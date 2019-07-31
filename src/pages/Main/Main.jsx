@@ -18,9 +18,22 @@ class Main extends Component {
     this.state = {
       moviesData: [],
       searchMovie: '',
+      elemPerLine: 2,
     };
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
+  }
+
+  componentDidMount() {
+    const { innerWidth } = window;
+    if (innerWidth < 400) {
+      this.setState({ elemPerLine: 1 });
+    } else if (innerWidth < 700) {
+      this.setState({ elemPerLine: 2 });
+    } else {
+      this.setState({ elemPerLine: 3 });
+    }
+    console.log(innerWidth);
   }
 
   handleSearchChange(event) {
@@ -32,32 +45,32 @@ class Main extends Component {
     const { searchMovie } = this.state;
     movies.seachByTitle(searchMovie)
       .then((res) => {
-        console.log(res)
         if (res.ok || !res.data.Reponse.Error) {
           this.setState({ moviesData: res.data.Search });
         } else {
           this.setState({ moviesData: [] });
         }
-        console.log(this.state)
+        this.setState({ searchMovie: '' });
       });
   }
 
   render() {
-    const { moviesData, searchMovie } = this.state;
+    const { moviesData, searchMovie, elemPerLine } = this.state;
     return (
 
       <div className="root">
-        <GridList cellHeight={180}>
-          <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
+        <GridList cols={elemPerLine} cellHeight={350}>
+          <GridListTile key="Subheader" cols={elemPerLine} style={{ height: 'auto' }}>
             <form onSubmit={this.handleSubmitSearch}>
               <TextField
-                id="outlined-name"
+                id="search-input"
                 label="Titulo"
                 placeholder="Ex: Nemo"
                 value={searchMovie}
                 onChange={this.handleSearchChange}
                 margin="normal"
                 variant="outlined"
+                fullWidth
               />
             </form>
           </GridListTile>
