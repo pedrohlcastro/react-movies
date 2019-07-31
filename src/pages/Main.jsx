@@ -1,10 +1,13 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
+
+import Button from '@material-ui/core/Button';
 
 const Main = () => (
   <div>
-    <h1>Main</h1>
+    <Button variant="contained" color="primary">
+      Hello World
+    </Button>
   </div>
 );
 
