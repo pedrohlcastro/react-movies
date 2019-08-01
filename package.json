@@ -2,11 +2,13 @@
   "name": "test-dti",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://pedrohlcastro.github.io/test-dti",
   "dependencies": {
     "@material-ui/core": "^4.3.0",
     "@material-ui/icons": "^4.2.1",
     "apisauce": "^1.0.3",
     "connected-react-router": "^6.5.2",
+    "gh-pages": "^2.1.0",
     "history": "^4.9.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -24,7 +26,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
