@@ -1,0 +1,14 @@
+.poster {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.info {
+    text-align: center;
+}
+
+#back-btn {
+    position: absolute;
+    margin: 30px;
+}

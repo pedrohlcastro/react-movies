@@ -3,8 +3,16 @@ import { movieActions } from '../actions';
 
 const INITIAL_STATE = {
   moviesData: [],
+  isLoading: false,
   activeMovie: -1,
   orderType: '',
+  movie: {
+    Title: '',
+    Poster: '',
+    Details: {
+      Plot: '',
+    },
+  },
 };
 
 
@@ -13,7 +21,8 @@ export default (state = INITIAL_STATE, action) => {
     case movieActions.default.SET_CURRENT:
       return {
         ...state,
-        activeMovie: action.payload.index,
+        activeMovie: action.payload,
+        movie: state.moviesData[action.payload],
       };
     case movieActions.default.FETCH_MOVIES:
       return {

@@ -39,7 +39,7 @@ exports[`renders correctly 1`] = `
                 data-shrink={false}
                 htmlFor="search-input"
               >
-                Titulo
+                Nome do filme
               </label>
               <div
                 className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl"

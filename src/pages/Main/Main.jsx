@@ -9,7 +9,6 @@ import TextField from '@material-ui/core/TextField';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
-
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
@@ -107,7 +106,7 @@ class Main extends Component {
             <form onSubmit={this.handleSubmitSearch}>
               <TextField
                 id="search-input"
-                label="Titulo"
+                label="Nome do filme"
                 placeholder="Ex: Nemo"
                 value={searchMovie}
                 onChange={this.handleSearchChange}
