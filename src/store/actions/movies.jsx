@@ -1,15 +1,16 @@
 import { moviesService } from '../../services';
 import { ratingsMean } from './helpers';
 
-export const orderByAsync = (moviesData, order) => ({
+export const orderByAsync = (moviesData, order, direction) => ({
   type: 'ORDER_BY',
   payload: {
     moviesData,
     order,
+    direction,
   },
 });
 
-export const orderBy = (moviesData, order) => (dispatch) => {
+export const orderBy = (moviesData, order, direction) => (dispatch) => {
   moviesData.sort((a, b) => {
     let keyA;
     let keyB;
@@ -22,12 +23,16 @@ export const orderBy = (moviesData, order) => (dispatch) => {
       keyB = b.Details.RatingsMean;
     }
 
-    if (keyA < keyB) return -1;
-    if (keyA > keyB) return 1;
+    if (keyA < keyB) return 1;
+    if (keyA > keyB) return -1;
     return 0;
   });
 
-  dispatch(orderByAsync(moviesData, order));
+  if (direction === 'acs') {
+    return dispatch(orderByAsync(moviesData.reverse(), order, direction));
+  }
+
+  return dispatch(orderByAsync(moviesData, order, direction));
 };
 
 export const startFetchMovies = () => ({

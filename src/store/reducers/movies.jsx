@@ -3,6 +3,7 @@ import { movieActions } from '../actions';
 
 const INITIAL_STATE = {
   moviesData: [],
+  orderDirection: 'desc',
   isLoading: false,
   activeMovie: -1,
   orderType: '',
@@ -33,7 +34,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         moviesData: action.payload.moviesData,
-        orderType: action.payload.order,
+        orderType: '',
+        orderDirection: 'desc',
         isLoading: false,
       };
     case movieActions.default.ORDER_BY:
@@ -41,6 +43,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         moviesData: action.payload.moviesData,
         orderType: action.payload.order,
+        orderDirection: action.payload.direction,
       };
     default:
       return state;

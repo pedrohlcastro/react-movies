@@ -31,6 +31,7 @@ class Main extends Component {
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
     this.handleChangeOrder = this.handleChangeOrder.bind(this);
+    this.handleChangeDirection = this.handleChangeDirection.bind(this);
   }
 
   componentDidMount() {
@@ -67,30 +68,48 @@ class Main extends Component {
   }
 
   handleChangeOrder(event) {
-    const { changeOrder, moviesData } = this.props;
+    const { changeOrder, moviesData, orderDirection } = this.props;
 
-    changeOrder(moviesData, event.target.value);
+    changeOrder(moviesData, event.target.value, orderDirection);
+  }
+
+  handleChangeDirection(event) {
+    const { changeOrder, moviesData, order } = this.props;
+
+    changeOrder(moviesData, order, event.target.value);
   }
 
   renderOrder() {
-    const { moviesData, order } = this.props;
-    const { elemPerLine } = this.state;
+    const {
+      moviesData, order, isLoading, orderDirection,
+    } = this.props;
 
-    if (moviesData.length) {
+    if (moviesData.length && !isLoading) {
       return (
-        <GridListTile key="filter" cols={elemPerLine} style={{ height: 'auto' }}>
+        <span>
           <InputLabel htmlFor="order-picker">
               Ordernar por
           </InputLabel>
           <Select
             value={order}
             onChange={this.handleChangeOrder}
-            input={<OutlinedInput name="age" id="order-picker" />}
+            input={<OutlinedInput name="order" id="order-picker" />}
           >
             <MenuItem value="name">Nome</MenuItem>
             <MenuItem value="ratings">Média das avaliações</MenuItem>
           </Select>
-        </GridListTile>
+          <InputLabel htmlFor="direction-picker">
+              Sentido da ordenação
+          </InputLabel>
+          <Select
+            value={orderDirection}
+            onChange={this.handleChangeDirection}
+            input={<OutlinedInput name="direction" id="direction-picker" />}
+          >
+            <MenuItem value="acs">Crescente</MenuItem>
+            <MenuItem value="desc">Decrescente</MenuItem>
+          </Select>
+        </span>
       );
     }
     return null;
@@ -100,7 +119,7 @@ class Main extends Component {
     const { isLoading } = this.props;
     if (isLoading) {
       return (
-        <CircularProgress />
+        <CircularProgress className="progress" />
       );
     }
     return null;
@@ -127,8 +146,10 @@ class Main extends Component {
               />
             </form>
           </GridListTile>
-          {this.renderOrder()}
-          {this.renderLoading()}
+          <GridListTile key="filter-direction" cols={elemPerLine} style={{ height: 'auto' }}>
+            {this.renderLoading()}
+            {this.renderOrder()}
+          </GridListTile>
           { moviesData.map((movie, index) => (
             <GridListTile key={movie.Poster}>
               <img src={movie.Poster} alt={movie.Title} />
@@ -152,13 +173,17 @@ class Main extends Component {
 const mapStateToProps = state => ({
   moviesData: state.movies.moviesData,
   order: state.movies.orderType,
+  orderDirection: state.movies.orderDirection,
+  isLoading: state.movies.isLoading,
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchMovies: (title, order) => { dispatch(movieActions.fetchMovies(title, order)); },
   setCurrent: (index) => { dispatch(movieActions.setCurrentMovie(index)); },
   navToDetails: (index) => { dispatch(push(`/details/${index}`)); },
-  changeOrder: (moviesData, type) => { dispatch(movieActions.orderBy(moviesData, type)); },
+  changeOrder: (moviesData, type, direction) => {
+    dispatch(movieActions.orderBy(moviesData, type, direction));
+  },
 });
 
 export default connect(
