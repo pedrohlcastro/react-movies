@@ -2,7 +2,7 @@
   "name": "test-dti",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://pedrohlcastro.github.io/react-movies/",
+  "homepage": "https://pedrohlcastro.github.io/react-movies",
   "dependencies": {
     "@material-ui/core": "^4.3.0",
     "@material-ui/icons": "^4.2.1",
