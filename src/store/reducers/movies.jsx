@@ -18,6 +18,11 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case movieActions.default.START_FETCH_MOVIES:
+      return {
+        ...state,
+        isLoading: true,
+      };
     case movieActions.default.SET_CURRENT:
       return {
         ...state,
@@ -29,6 +34,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         moviesData: action.payload.moviesData,
         orderType: action.payload.order,
+        isLoading: false,
       };
     case movieActions.default.ORDER_BY:
       return {

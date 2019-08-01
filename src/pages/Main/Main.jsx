@@ -13,6 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import './main.css';
 import { movieActions } from '../../store/actions';
@@ -95,6 +96,16 @@ class Main extends Component {
     return null;
   }
 
+  renderLoading() {
+    const { isLoading } = this.props;
+    if (isLoading) {
+      return (
+        <CircularProgress />
+      );
+    }
+    return null;
+  }
+
   render() {
     const { moviesData } = this.props;
     const { elemPerLine, searchMovie } = this.state;
@@ -117,6 +128,7 @@ class Main extends Component {
             </form>
           </GridListTile>
           {this.renderOrder()}
+          {this.renderLoading()}
           { moviesData.map((movie, index) => (
             <GridListTile key={movie.Poster}>
               <img src={movie.Poster} alt={movie.Title} />

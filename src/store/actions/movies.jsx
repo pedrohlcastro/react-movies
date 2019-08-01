@@ -30,6 +30,10 @@ export const orderBy = (moviesData, order) => (dispatch) => {
   dispatch(orderByAsync(moviesData, order));
 };
 
+export const startFetchMovies = () => ({
+  type: 'START_FETCH_MOVIES',
+});
+
 export const fetchMoviesAsync = (moviesData, order) => ({
   type: 'FETCH_MOVIES',
   payload: {
@@ -40,6 +44,7 @@ export const fetchMoviesAsync = (moviesData, order) => ({
 
 export const fetchMovies = (title, order) => async (dispatch) => {
   let movies = [];
+  dispatch(startFetchMovies());
 
   const res = await moviesService.seachByTitle(title);
   if (res.ok || !res.data.Reponse.Error) {
@@ -71,4 +76,5 @@ export default {
   SET_CURRENT: 'SET_CURRENT',
   FETCH_MOVIES: 'FETCH_MOVIES',
   ORDER_BY: 'ORDER_BY',
+  START_FETCH_MOVIES: 'START_FETCH_MOVIES',
 };
