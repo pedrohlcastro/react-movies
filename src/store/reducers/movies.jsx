@@ -1,13 +1,26 @@
-const INITIAL_STATE = {};
+import { movieActions } from '../actions';
+
+
+const INITIAL_STATE = {
+  moviesData: [],
+  activeMovie: -1,
+  orderType: 'name',
+};
+
 
 export default (state = INITIAL_STATE, action) => {
-  switch (action) {
-    case 'FOO':
-      console.log('BAR');
-      break;
+  switch (action.type) {
+    case movieActions.default.SET_CURRENT:
+      return {
+        ...state,
+      };
+    case movieActions.default.FETCH_MOVIES:
+      return {
+        ...state,
+        moviesData: action.payload.moviesData,
+        orderType: action.payload.orderType,
+      };
     default:
-      console.log('SOMETHING');
+      return state;
   }
-
-  return state;
 };

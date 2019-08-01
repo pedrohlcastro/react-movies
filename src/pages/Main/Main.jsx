@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
+
 
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -10,13 +12,13 @@ import InfoIcon from '@material-ui/icons/Info';
 
 
 import './main.css';
-import movies from '../../services';
+import { movieActions } from '../../store/actions';
+
 
 class Main extends Component {
   constructor() {
     super();
     this.state = {
-      moviesData: [],
       searchMovie: '',
       elemPerLine: 2,
     };
@@ -33,7 +35,6 @@ class Main extends Component {
     } else {
       this.setState({ elemPerLine: 3 });
     }
-    console.log(innerWidth);
   }
 
   handleSearchChange(event) {
@@ -41,21 +42,23 @@ class Main extends Component {
   }
 
   handleSubmitSearch(event) {
+    const { fetchMovies } = this.props;
+    const { searchMovie, order } = this.state;
+
     event.preventDefault();
-    const { searchMovie } = this.state;
-    movies.seachByTitle(searchMovie)
-      .then((res) => {
-        if (res.ok || !res.data.Reponse.Error) {
-          this.setState({ moviesData: res.data.Search });
-        } else {
-          this.setState({ moviesData: [] });
-        }
-        this.setState({ searchMovie: '' });
-      });
+
+    fetchMovies(searchMovie, order);
+  }
+
+  navToInfo(index) {
+    const { navToDetails, setCurrent } = this.props;
+    setCurrent(index);
+    navToDetails(index);
   }
 
   render() {
-    const { moviesData, searchMovie, elemPerLine } = this.state;
+    const { moviesData } = this.props;
+    const { elemPerLine, searchMovie } = this.state;
     return (
 
       <div className="root">
@@ -74,15 +77,15 @@ class Main extends Component {
               />
             </form>
           </GridListTile>
-          { moviesData.map(movie => (
+          { moviesData.map((movie, index) => (
             <GridListTile key={movie.Poster}>
               <img src={movie.Poster} alt={movie.Title} />
               <GridListTileBar
                 title={movie.Title}
                 subtitle={<span>{movie.Year}</span>}
                 actionIcon={(
-                  <IconButton aria-label={`info about ${movie.Title}`}>
-                    <InfoIcon />
+                  <IconButton aria-label={`info about ${movie.Title}`} onClick={() => this.navToInfo(index)}>
+                    <InfoIcon color="error" />
                   </IconButton>
                 )}
               />
@@ -94,7 +97,17 @@ class Main extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  moviesData: state.movies.moviesData,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchMovies: (title, order) => { dispatch(movieActions.fetchMovies(title, order)); },
+  setCurrent: (index) => { dispatch(movieActions.setCurrentMovie(index)); },
+  navToDetails: (index) => { dispatch(push(`/details/${index}`)); },
+});
+
 export default connect(
-  null,
-  null,
+  mapStateToProps,
+  mapDispatchToProps,
 )(Main);

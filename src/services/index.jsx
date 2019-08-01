@@ -1,4 +1,4 @@
 import Movies from './movies';
 
 
-export default new Movies();
+export const movies = new Movies();
