@@ -1,4 +1,4 @@
-import { movies } from '../../services';
+import { moviesService } from '../../services';
 
 export const fetchMoviesAsync = (moviesData, order) => ({
   type: 'FETCH_MOVIES',
@@ -8,14 +8,83 @@ export const fetchMoviesAsync = (moviesData, order) => ({
   },
 });
 
-export const fetchMovies = (title, order) => (dispatch) => {
-  movies.seachByTitle(title)
-    .then((res) => {
+export const orderByAsync = (moviesData, order) => ({
+  type: 'ORDER_BY',
+  payload: {
+    moviesData,
+    order,
+  },
+});
+
+export const orderBy = (moviesData, order) => (dispatch) => {
+  moviesData.sort((a, b) => {
+    let keyA;
+    let keyB;
+
+    if (order === 'name') {
+      keyA = a.Title;
+      keyB = b.Title;
+    } else if (order === 'ratings') {
+      keyA = a.Details.RatingsMean;
+      keyB = b.Details.RatingsMean;
+    }
+
+    if (keyA < keyB) return -1;
+    if (keyA > keyB) return 1;
+    return 0;
+  });
+
+  dispatch(orderByAsync(moviesData, order));
+};
+
+const ratingsMean = async (ratings) => {
+  let mean = 0;
+
+  await Promise.all(ratings.map((rating) => {
+    const stringValue = rating.Value;
+    const splitedValue = stringValue.split('/');
+
+    switch (rating.Source) {
+      case 'Internet Movie Database':
+        mean += parseFloat(splitedValue[0] * 10);
+        break;
+      case 'Rotten Tomatoes':
+        mean += parseFloat(stringValue.slice(0, -1));
+        break;
+      case 'Metacritic':
+        mean += parseFloat(splitedValue[0]);
+        break;
+      default:
+        mean += 0;
+    }
+    return null;
+  }));
+
+  return Promise.resolve(Math.round(mean / ratings.length));
+};
+
+export const fetchMovies = (title, order) => async (dispatch) => {
+  let movies = [];
+
+  const res = await moviesService.seachByTitle(title);
+  if (res.ok || !res.data.Reponse.Error) {
+    movies = res.data.Search;
+
+    await Promise.all(movies.map(async (movie, index) => {
+      const detailsRes = await moviesService.searchById(movie.imdbID);
       if (res.ok || !res.data.Reponse.Error) {
-        return dispatch(fetchMoviesAsync(res.data.Search, order));
+        movies[index].Details = detailsRes.data;
+        movies[index].Details.RatingsMean = await ratingsMean(movie.Details.Ratings);
+      } else {
+        movies[index].Details = {};
+        movies[index].Details.RatingsMean = 0;
       }
-      return dispatch(fetchMoviesAsync([], order));
-    });
+    }));
+
+    return dispatch(fetchMoviesAsync(movies, order));
+  }
+
+  return dispatch(fetchMoviesAsync([], order));
 };
 
 export const setCurrentMovie = index => ({
@@ -26,4 +95,5 @@ export const setCurrentMovie = index => ({
 export default {
   SET_CURRENT: 'SET_CURRENT',
   FETCH_MOVIES: 'FETCH_MOVIES',
+  ORDER_BY: 'ORDER_BY',
 };

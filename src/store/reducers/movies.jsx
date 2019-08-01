@@ -13,12 +13,19 @@ export default (state = INITIAL_STATE, action) => {
     case movieActions.default.SET_CURRENT:
       return {
         ...state,
+        activeMovie: action.payload.index,
       };
     case movieActions.default.FETCH_MOVIES:
       return {
         ...state,
         moviesData: action.payload.moviesData,
-        orderType: action.payload.orderType,
+        orderType: action.payload.order,
+      };
+    case movieActions.default.ORDER_BY:
+      return {
+        ...state,
+        moviesData: action.payload.moviesData,
+        orderType: action.payload.order,
       };
     default:
       return state;

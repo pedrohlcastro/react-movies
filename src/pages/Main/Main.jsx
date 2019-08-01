@@ -42,11 +42,10 @@ class Main extends Component {
   }
 
   handleSubmitSearch(event) {
-    const { fetchMovies } = this.props;
-    const { searchMovie, order } = this.state;
+    const { fetchMovies, order } = this.props;
+    const { searchMovie } = this.state;
 
     event.preventDefault();
-
     fetchMovies(searchMovie, order);
   }
 
@@ -82,7 +81,7 @@ class Main extends Component {
               <img src={movie.Poster} alt={movie.Title} />
               <GridListTileBar
                 title={movie.Title}
-                subtitle={<span>{movie.Year}</span>}
+                subtitle={<span>{`${movie.Year} - Rating: ${movie.Details.RatingsMean}%`}</span>}
                 actionIcon={(
                   <IconButton aria-label={`info about ${movie.Title}`} onClick={() => this.navToInfo(index)}>
                     <InfoIcon color="error" />
@@ -99,6 +98,7 @@ class Main extends Component {
 
 const mapStateToProps = state => ({
   moviesData: state.movies.moviesData,
+  order: state.movies.orderType,
 });
 
 const mapDispatchToProps = dispatch => ({

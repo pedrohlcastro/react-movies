@@ -1,4 +1,4 @@
 import Movies from './movies';
 
 
-export const movies = new Movies();
+export const moviesService = new Movies();
