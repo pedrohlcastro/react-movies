@@ -10,24 +10,32 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 import './main.css';
 import { movieActions } from '../../store/actions';
 
 
 class Main extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
       searchMovie: '',
       elemPerLine: 2,
     };
+
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
+    this.handleChangeOrder = this.handleChangeOrder.bind(this);
   }
 
   componentDidMount() {
     const { innerWidth } = window;
+
     if (innerWidth < 400) {
       this.setState({ elemPerLine: 1 });
     } else if (innerWidth < 700) {
@@ -42,11 +50,14 @@ class Main extends Component {
   }
 
   handleSubmitSearch(event) {
+    event.preventDefault();
+
     const { fetchMovies, order } = this.props;
     const { searchMovie } = this.state;
 
-    event.preventDefault();
     fetchMovies(searchMovie, order);
+
+    this.setState({ searchMovie: '' });
   }
 
   navToInfo(index) {
@@ -55,11 +66,41 @@ class Main extends Component {
     navToDetails(index);
   }
 
+  handleChangeOrder(event) {
+    const { changeOrder, moviesData } = this.props;
+
+    changeOrder(moviesData, event.target.value);
+  }
+
+  renderOrder() {
+    const { moviesData, order } = this.props;
+    const { elemPerLine } = this.state;
+
+    if (moviesData.length) {
+      return (
+        <GridListTile key="filter" cols={elemPerLine} style={{ height: 'auto' }}>
+          <InputLabel htmlFor="order-picker">
+              Ordernar por
+          </InputLabel>
+          <Select
+            value={order}
+            onChange={this.handleChangeOrder}
+            input={<OutlinedInput name="age" id="order-picker" />}
+          >
+            <MenuItem value="name">Nome</MenuItem>
+            <MenuItem value="ratings">Média das avaliações</MenuItem>
+          </Select>
+        </GridListTile>
+      );
+    }
+    return null;
+  }
+
   render() {
     const { moviesData } = this.props;
     const { elemPerLine, searchMovie } = this.state;
-    return (
 
+    return (
       <div className="root">
         <GridList cols={elemPerLine} cellHeight={350}>
           <GridListTile key="Subheader" cols={elemPerLine} style={{ height: 'auto' }}>
@@ -76,6 +117,7 @@ class Main extends Component {
               />
             </form>
           </GridListTile>
+          {this.renderOrder()}
           { moviesData.map((movie, index) => (
             <GridListTile key={movie.Poster}>
               <img src={movie.Poster} alt={movie.Title} />
@@ -105,6 +147,7 @@ const mapDispatchToProps = dispatch => ({
   fetchMovies: (title, order) => { dispatch(movieActions.fetchMovies(title, order)); },
   setCurrent: (index) => { dispatch(movieActions.setCurrentMovie(index)); },
   navToDetails: (index) => { dispatch(push(`/details/${index}`)); },
+  changeOrder: (moviesData, type) => { dispatch(movieActions.orderBy(moviesData, type)); },
 });
 
 export default connect(

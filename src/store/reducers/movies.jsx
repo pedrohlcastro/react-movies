@@ -4,7 +4,7 @@ import { movieActions } from '../actions';
 const INITIAL_STATE = {
   moviesData: [],
   activeMovie: -1,
-  orderType: 'name',
+  orderType: '',
 };
 
 
