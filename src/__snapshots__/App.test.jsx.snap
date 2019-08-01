@@ -89,6 +89,20 @@ exports[`renders correctly 1`] = `
           </form>
         </div>
       </li>
+      <li
+        className="MuiGridListTile-root"
+        style={
+          Object {
+            "height": "auto",
+            "padding": 2,
+            "width": "100%",
+          }
+        }
+      >
+        <div
+          className="MuiGridListTile-tile"
+        />
+      </li>
     </ul>
   </div>
 </div>
