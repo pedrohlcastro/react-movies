@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="App"
+>
+  <div
+    className="root"
+  >
+    <ul
+      className="MuiGridList-root"
+      style={
+        Object {
+          "margin": -2,
+        }
+      }
+    >
+      <li
+        className="MuiGridListTile-root"
+        style={
+          Object {
+            "height": "auto",
+            "padding": 2,
+            "width": "100%",
+          }
+        }
+      >
+        <div
+          className="MuiGridListTile-tile"
+        >
+          <form
+            onSubmit={[Function]}
+          >
+            <div
+              className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth"
+            >
+              <label
+                className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-outlined"
+                data-shrink={false}
+                htmlFor="search-input"
+              >
+                Titulo
+              </label>
+              <div
+                className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl"
+                onClick={[Function]}
+              >
+                <fieldset
+                  aria-hidden={true}
+                  className="PrivateNotchedOutline-root-63 MuiOutlinedInput-notchedOutline"
+                  style={
+                    Object {
+                      "paddingLeft": 8,
+                    }
+                  }
+                >
+                  <legend
+                    className="PrivateNotchedOutline-legend-64"
+                    style={
+                      Object {
+                        "width": 0.01,
+                      }
+                    }
+                  >
+                    <span
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "&#8203;",
+                        }
+                      }
+                    />
+                  </legend>
+                </fieldset>
+                <input
+                  aria-invalid={false}
+                  className="MuiInputBase-input MuiOutlinedInput-input"
+                  disabled={false}
+                  id="search-input"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  placeholder="Ex: Nemo"
+                  required={false}
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

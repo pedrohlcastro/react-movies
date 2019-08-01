@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es6: true,
+    jest: true,
   },
   extends: 'airbnb',
   globals: {
@@ -18,6 +19,7 @@ module.exports = {
   plugins: [
     'react',
   ],
+  
   rules: {
     "import/prefer-default-export": "off",
     "react/prop-types": "off",
