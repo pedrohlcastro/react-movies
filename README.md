@@ -9,6 +9,7 @@
   * `pages`: guarda as paginas (Main e Details), não houve foco no desgin foi utilizado o `material-ui`
   * `components`: poderia ser usada para armazenar components desenvolvidos no projeto
   * `services`: encapsulamento de chamadas externas, uso do `apisauce`
+  * `routes`: definição e config das rotas
   
 Padrão do projeto foi mantido usando `eslint` configurado com base no airbnb. 
 
